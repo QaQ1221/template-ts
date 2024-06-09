@@ -1,30 +1,25 @@
 import './index.css';
 import { Watch } from './example-unit';
-import { Time } from './example-unit';
 
-// refresh time
-function updateDisplay(time: Time) {
+function updateDisplay(watch: Watch) {
     const timeDisplayElement = document.getElementById('time-display');
     if (timeDisplayElement) {
-        timeDisplayElement.textContent = `${time.getTime()}`;
+        timeDisplayElement.textContent = `${watch.getCurrentTime().getTime()}`;
     }
 }
 
-//get and show GMT+1
-const time = new Time();
-time.updateToCurrentTime();
-updateDisplay(time);
-
-// change time every single seconds
-setInterval(() => {
-    time.updateToCurrentTime();
-    updateDisplay(time);
-}, 1000);
-
-
-// Watch 
+// Watch
 const myWatch = new Watch();
 myWatch.displayTime();
+updateDisplay(myWatch);
+
+// update seconds
+setInterval(() => {
+    const currentTime = myWatch.getCurrentTime();
+    currentTime.updateToCurrentTime(currentTime.getHours(),currentTime.getMinutes(), currentTime.getSeconds());
+    updateDisplay(myWatch);
+    currentTime.increaseSecond();
+}, 1000);
 
 document.getElementById('mode-button')?.addEventListener('click', () => {
     myWatch.modeButton();
@@ -32,6 +27,7 @@ document.getElementById('mode-button')?.addEventListener('click', () => {
 
 document.getElementById('increase-button')?.addEventListener('click', () => {
     myWatch.increaseButton();
+    updateDisplay(myWatch);
 });
 
 document.getElementById('light-button')?.addEventListener('click', () => {

@@ -1,4 +1,3 @@
-
 import { Time } from './time';
 import { Light } from './light';
 
@@ -17,6 +16,7 @@ export class Watch {
 
     displayTime(): void {
         console.log(`Current Time: ${this.currentTime.getTime()}`);
+        this.updateDisplay(); 
     }
 
     modeButton(): void {
@@ -26,17 +26,14 @@ export class Watch {
     }
 
     increaseButton(): void {
-        const now = new Time();
-        now.updateToCurrentTime();
         if (this.editMode === 1) {
-            this.currentTime.increaseHour();
+            this.currentTime.increaseHour(); 
         } else if (this.editMode === 2) {
-            this.currentTime.increaseMinute();
+            this.currentTime.increaseMinute(); 
         }
-        now.addTime(this.currentTime.getHours(), this.currentTime.getMinutes());
         this.displayTime();
-        this.updateDisplay(now); // update watch
     }
+
     lightButton(): void {
         this.light.toggleLight();
     }
@@ -46,13 +43,13 @@ export class Watch {
         this.displayTime();
     }
 
-    private updateDisplay(time: Time): void {
+    private updateDisplay(): void {
         const timeDisplayElement = document.getElementById('time-display');
         if (timeDisplayElement) {
-            timeDisplayElement.textContent = `${time.getTime()}`;
+            timeDisplayElement.textContent = `${this.currentTime.getTime()}`;
         }
     }
-    
+
     getCurrentTime(): Time {
         return this.currentTime;
     }
