@@ -37,7 +37,11 @@ export class Watch {
     lightButton(): void {
         this.light.toggleLight();
     }
-
+    
+    toggleFormatButton(): void {
+        this.currentTime.toggleFormat();
+        this.displayTime();
+    }
     resetButton(): void {
         this.currentTime.resetTime();
         this.displayTime();
@@ -53,4 +57,9 @@ export class Watch {
     getCurrentTime(): Time {
         return this.currentTime;
     }
+
+    getUniqueId(): string {
+        return `${this.currentTime.getHours()}-${this.currentTime.getMinutes()}-${this.currentTime.getSeconds()}`;
+    }
+
 }

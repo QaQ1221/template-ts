@@ -1,6 +1,7 @@
 
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -32,9 +33,9 @@ body {
     position: relative;
     transition: background-color 0.5s;
 }
-/* light */
+
 .square.light-on {
-    -webkit-box-shadow:0px 0px 105px 45px rgba(45,255,196,0.9);
+    -webkit-box-shadow: 0px 0px 105px 45px rgba(45,255,196,0.9);
     -moz-box-shadow: 0px 0px 105px 45px rgba(45,255,196,0.9);
     box-shadow: 0px 0px 105px 45px rgba(45,255,196,0.9);
 }
@@ -47,23 +48,19 @@ h1 {
 
 .buttons {
     display: flex;
-    gap: 50px;
+    gap: 10px;
     position: absolute;
-    left: -50px; 
-    top: 50%;
-    transform: translateY(-50%);
-    flex-direction: column; 
+    left: 10px;
+    bottom: 10px;
 }
 
 button {
-    padding: 3px 3px;
+    padding: 5px 10px;
     font-size: 1em;
     background-color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transform: rotate(-90deg); /* text */
-    white-space: nowrap; 
 }
 
 button:hover {
