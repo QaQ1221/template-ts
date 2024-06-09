@@ -1,3 +1,71 @@
+/* src/index.css */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.timezone {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.square {
+    width: 300px;
+    height: 200px;
+    background-color: #007bff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: background-color 0.5s;
+}
+
+.square.light-on {
+    -webkit-box-shadow:0px 0px 105px 45px rgba(45,255,196,0.9);
+    -moz-box-shadow: 0px 0px 105px 45px rgba(45,255,196,0.9);
+    box-shadow: 0px 0px 105px 45px rgba(45,255,196,0.9);
+}
+
 h1 {
-    color: red;
+    font-size: 2em;
+    color: #fff;
+    margin: 0;
+}
+
+.buttons {
+    display: flex;
+    gap: 50px;
+    position: absolute;
+    left: -50px; /* 使按钮紧贴表盘左侧外面 */
+    top: 50%;
+    transform: translateY(-50%);
+    flex-direction: column; /* 将按钮排列为列 */
+}
+
+button {
+    padding: 3px 3px;
+    font-size: 1em;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transform: rotate(-90deg); /* 旋转按钮中的文字 */
+    white-space: nowrap; /* 防止文本换行 */
+}
+
+button:hover {
+    background-color: #ddd;
 }

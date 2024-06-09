@@ -1,13 +1,23 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <!-- support for mobile touch devices -->
+    <title>Watch Example</title>
     <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="index.css">
 </head>
 <body>
-    <h1>Title</h1>
+    <div class="container">
+        <div class="timezone">GMT+1</div>
+        <div class="square">
+            <h1 id="time-display">Loading...</h1>
+            <div class="buttons">
+                <button id="mode-button">Mode</button>
+                <button id="increase-button">Increase</button>
+                <button id="light-button">Light</button>
+            </div>
+        </div>
+    </div>
+    <script src="bundle.js"></script>
 </body>
 </html>
