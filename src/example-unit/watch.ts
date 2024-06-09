@@ -1,4 +1,4 @@
-// example-unit/watch.ts
+
 import { Time } from './time';
 import { Light } from './light';
 
@@ -35,7 +35,7 @@ export class Watch {
         }
         now.addTime(this.currentTime.getHours(), this.currentTime.getMinutes());
         this.displayTime();
-        this.updateDisplay(now); // 更新表盘显示
+        this.updateDisplay(now); // update watch
     }
     lightButton(): void {
         this.light.toggleLight();
