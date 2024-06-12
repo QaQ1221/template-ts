@@ -1,8 +1,10 @@
 export class Light {
     private isOn: boolean;
+    private uniqueId: string;
 
-    constructor() {
+    constructor(uniqueId: string) {
         this.isOn = false;
+        this.uniqueId = uniqueId; // 接受并保存唯一标识符
     }
 
     toggleLight(): void {
@@ -10,8 +12,9 @@ export class Light {
         console.log(`Light is now ${this.isOn ? 'ON' : 'OFF'}`);
         this.updateBackground();
     }
+
     private updateBackground(): void {
-        const squareElement = document.querySelector('.square');
+        const squareElement = document.querySelector(`#${this.uniqueId} .square`);
         if (squareElement) {
             if (this.isOn) {
                 squareElement.classList.add('light-on');

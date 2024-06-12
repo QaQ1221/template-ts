@@ -6,12 +6,16 @@ export class Watch {
     private isEditable: boolean;
     private editMode: number;
     private light: Light;
+    private uniqueId: string;
+    private timezoneOffset: number;
 
-    constructor() {
-        this.currentTime = new Time();
+    constructor(uniqueId: string, timezoneOffset: number) {
+        this.currentTime = new Time(timezoneOffset);
         this.isEditable = false;
-        this.editMode = 0; // 0: not editable, 1: edit hours, 2: edit minutes
-        this.light = new Light();
+        this.editMode = 0; // 0: 不可编辑，1: 编辑小时，2: 编辑分钟
+        this.light = new Light(uniqueId); // 将唯一ID传递给Light实例
+        this.uniqueId = uniqueId; // 接收唯一ID
+        this.timezoneOffset = timezoneOffset; // 保存时区偏移量
     }
 
     displayTime(): void {
@@ -42,13 +46,15 @@ export class Watch {
         this.currentTime.toggleFormat();
         this.displayTime();
     }
+    
     resetButton(): void {
-        this.currentTime.resetTime();
+        const now = new Date();
+        this.currentTime.resetTime(now, this.timezoneOffset); // 使用当前时间和时区偏移重置时间
         this.displayTime();
     }
 
     private updateDisplay(): void {
-        const timeDisplayElement = document.getElementById('time-display');
+        const timeDisplayElement = document.querySelector(`#${this.uniqueId} h1`); // 使用唯一ID获取元素
         if (timeDisplayElement) {
             timeDisplayElement.textContent = `${this.currentTime.getTime()}`;
         }
@@ -57,9 +63,4 @@ export class Watch {
     getCurrentTime(): Time {
         return this.currentTime;
     }
-
-    getUniqueId(): string {
-        return `${this.currentTime.getHours()}-${this.currentTime.getMinutes()}-${this.currentTime.getSeconds()}`;
-    }
-
 }

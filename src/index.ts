@@ -3,7 +3,9 @@ import { ClockManager } from './example-unit';
 
 const clockManager = new ClockManager('clock-container');
 
-document.getElementById('add-clock-button')?.addEventListener('click', () => {
-    const timezoneOffset = parseInt(prompt('Enter timezone offset (e.g., 1 for GMT+1):') || '0', 10);
-    clockManager.addClock(timezoneOffset);
-});
+// 清除已有的时钟容器内容
+document.getElementById('clock-container')!.innerHTML = '';
+
+// 初始化时添加三个时钟，分别为1-3时区
+clockManager.addClock(1);
+clockManager.addClock(2);
