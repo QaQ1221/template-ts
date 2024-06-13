@@ -64,15 +64,6 @@ export class Time {
         }
     }
 
-    // 更新方法以支持当前时间和时区偏移
-    updateToCurrentTime(): void {
-        const now = new Date();
-        const timeWithOffset = this.convertToGMTOffset(now, 0); // 使用当前时间
-        this.hours = timeWithOffset.hours;
-        this.minutes = timeWithOffset.minutes;
-        this.seconds = timeWithOffset.seconds;
-    }
-
     getHours(): number {
         return this.hours;
     }

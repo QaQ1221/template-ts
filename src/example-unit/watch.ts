@@ -3,7 +3,7 @@ import { Light } from './light';
 
 export class Watch {
     private currentTime: Time;
-    private isEditable: boolean;
+    
     private editMode: number;
     private light: Light;
     private uniqueId: string;
@@ -11,7 +11,7 @@ export class Watch {
 
     constructor(uniqueId: string, timezoneOffset: number) {
         this.currentTime = new Time(timezoneOffset);
-        this.isEditable = false;
+
         this.editMode = 0; // 0: 不可编辑，1: 编辑小时，2: 编辑分钟
         this.light = new Light(uniqueId); // 将唯一ID传递给Light实例
         this.uniqueId = uniqueId; // 接收唯一ID
@@ -25,7 +25,7 @@ export class Watch {
 
     modeButton(): void {
         this.editMode = (this.editMode + 1) % 3;
-        this.isEditable = this.editMode !== 0;
+     
         console.log(`Mode changed to ${this.editMode === 1 ? 'edit hours' : this.editMode === 2 ? 'edit minutes' : 'not editable'}`);
     }
 

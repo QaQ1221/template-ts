@@ -8,11 +8,25 @@
 </head>
 <body>
     <div id="clock-container" class="container"></div>
-    <div class="controls">
-        <input type="number" id="clock-count" placeholder="Number of Clocks" />
-        <input type="number" id="timezone-offset" placeholder="Timezone Offset" />
-        <button id="add-clock-button" class="add-clock-button">Add Clocks</button>
+    <button id="add-clock-button" class="add-clock-button">Add Clocks</button>
+    
+
+    <div id="dialog-container" class="dialog-container">
+        <div class="dialog">
+            <h2>Add Clocks</h2>
+            <div id="step-1">
+                <label for="clock-count">Number of Clocks:</label>
+                <input type="number" id="clock-count" placeholder="Number of Clocks" />
+                <button id="next-button" class="update-button">Next</button>
+            </div>
+            <div id="step-2" style="display:none;">
+                <div id="timezone-inputs"></div>
+                <button id="submit-button" class="update-button">Submit</button>
+                <button id="cancel-button" class="cancel-button">Cancel</button>
+            </div>
+        </div>
     </div>
+
     <script src="bundle.js"></script>
 </body>
 </html>
