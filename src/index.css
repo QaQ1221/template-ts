@@ -206,3 +206,17 @@ button:hover {
 .toggle-format-button {
     transform: translate(-50%, -50%) rotate(288deg) translate(140px) rotate(-288deg);
 }
+.controls {
+    position: fixed;
+    top: 50px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+button, input {
+    padding: 10px;
+    font-size: 1em;
+    margin-top: 10px;
+}
