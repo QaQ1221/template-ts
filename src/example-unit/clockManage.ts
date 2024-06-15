@@ -1,4 +1,5 @@
 import { Watch } from './watch';
+import { WatchAnimator } from './watchAnimator';
 
 export class ClockManager {
     private watches: Watch[] = [];
@@ -89,7 +90,7 @@ export class ClockManager {
             timezoneInputs.appendChild(input);
         }
 
-        console.log('Switching to step 2'); // 调试信息
+        console.log('Switching to step 2'); 
         this.step1.style.display = 'none';
         this.step2.style.display = 'block';
     }
@@ -171,6 +172,9 @@ export class ClockManager {
         document.querySelector(`.toggle-format-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
             watch.toggleFormatButton();
         });
+
+        const animator = new WatchAnimator(clockElement, this.container); // 为每个表盘创建一个动画实例
+
 
         setInterval(() => {
             const currentTime = watch.getCurrentTime();

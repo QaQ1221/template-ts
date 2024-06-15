@@ -6,6 +6,8 @@ export class WatchAnimator {
     private angle: number;
     private scale: number;
     private scaleDirection: number;
+    private isAnimating: boolean;  // 新增的标志变量，用于控制动画状态
+    private animationFrameId: number | null;
 
     constructor(private watchElement: HTMLElement, private container: HTMLElement) {
         this.rotationCenter = new Vector2(
@@ -15,17 +17,28 @@ export class WatchAnimator {
         this.angle = 0;
         this.scale = 1;
         this.scaleDirection = 1;
-
-        document.getElementById('start-animation-button')?.addEventListener('click', () => {
-            this.startAnimation();
+        this.isAnimating = false;
+        this.animationFrameId = null;
+        document.getElementById('stop-animation-button')?.addEventListener('click',() =>{
+            this.stopAnimation();
         });
+        this.watchElement.addEventListener('click', () => {
+            this.isAnimating ? this.stopAnimation() : this.startAnimation();
+        });
+
     }
 
     private startAnimation(): void {
+        this.isAnimating = true;
         requestAnimationFrame(() => this.animate());
     }
 
+    public stopAnimation(): void {
+        this.isAnimating = false;
+    }
+
     private animate(): void {
+        if (!this.isAnimating) return;
         const rotationMatrix = Matrix3x3.rotation(this.angle);
         const scalingMatrix = Matrix3x3.scaling(this.scale, this.scale);
         const translationMatrixToCenter = Matrix3x3.translation(-this.rotationCenter.x, -this.rotationCenter.y);
@@ -41,12 +54,13 @@ export class WatchAnimator {
 
         this.watchElement.style.transform = `translate(${newCenter.x - this.watchElement.offsetWidth / 2}px, ${newCenter.y - this.watchElement.offsetHeight / 2}px) scale(${this.scale}) rotate(${this.angle}rad)`;
 
-        this.angle += 0.01;
-        this.scale += this.scaleDirection * 0.01;
-        if (this.scale > 1.5 || this.scale < 0.5) {
+        this.angle += 0.0005;
+        this.scale += this.scaleDirection * 0.0001;
+        if (this.scale > 1.005 || this.scale < 0.995) {
             this.scaleDirection *= -1;
         }
 
-        requestAnimationFrame(() => this.animate());
+        // requestAnimationFrame(() => this.animate());
+        this.animationFrameId = requestAnimationFrame(() => this.animate());
     }
 }
