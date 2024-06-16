@@ -4,7 +4,7 @@ export class Light {
 
     constructor(uniqueId: string) {
         this.isOn = false;
-        this.uniqueId = uniqueId; // 接受并保存唯一标识符
+        this.uniqueId = uniqueId; //getid
     }
 
     toggleLight(): void {

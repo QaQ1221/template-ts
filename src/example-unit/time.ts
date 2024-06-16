@@ -46,7 +46,7 @@ export class Time {
         }
     }
 
-    // 修改 resetTime 方法以接受 Date 对象和 offset 参数
+
     resetTime(date: Date, offset: number): void {
         const timeWithOffset = this.convertToGMTOffset(date, offset);
         this.hours = timeWithOffset.hours;

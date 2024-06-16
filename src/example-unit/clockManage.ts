@@ -3,7 +3,7 @@ import { Watch } from './watch';
 
 export class ClockManager {
     private watches: Watch[] = [];
-    private animators: WatchAnimator[] = []; // 保存所有的 WatchAnimator 实例
+    private animators: WatchAnimator[] = []; // Save all WatchAnimator instances
     private container: HTMLElement;
     private dialogContainer: HTMLElement;
     private step1: HTMLElement;
@@ -11,10 +11,10 @@ export class ClockManager {
     private nextButton: HTMLElement;
     private submitButton: HTMLElement;
     private cancelButton: HTMLElement;
-    private isAnimationEnabled: boolean = false; // 全局动画开关
+    private isAnimationEnabled: boolean = false; 
     private addClockButton: HTMLElement;
-    private isHandlingNextStep: boolean = false;
-    private isHandlingSubmit: boolean = false;
+    // private isHandlingNextStep: boolean = false;
+    // private isHandlingSubmit: boolean = false;
 
     constructor(containerId: string) {
         const container = document.getElementById(containerId);
@@ -38,7 +38,7 @@ export class ClockManager {
         this.addClockButton = addClockButton;
         this.addClockButton.addEventListener('click', () => {
             this.showDialog();
-            this.isHandlingNextStep = false; // 重置标志
+            // this.isHandlingNextStep = false; // reset
         });
 
 
@@ -67,20 +67,20 @@ export class ClockManager {
     }
   
     handleNextStep(): void {
-        if (this.isHandlingNextStep) return; // 如果已经在处理，则返回
-        this.isHandlingNextStep = true; //
-        console.log('handleNextStep called'); // 调试信息
+        // if (this.isHandlingNextStep) return; // jump out
+        // this.isHandlingNextStep = true; //
+        console.log('handleNextStep called'); // messages
    
         const clockCount = parseInt((document.getElementById('clock-count') as HTMLInputElement).value, 10);
-        console.log(`clockCount: ${clockCount}`); // 调试信息
+        console.log(`clockCount: ${clockCount}`); //  messages
         if (isNaN(clockCount) || clockCount <= 0) {
             alert('Please enter a valid number of clocks.');
-            this.isHandlingNextStep = false; // 重置标志变量
+            // this.isHandlingNextStep = false; // reset
             return;
         }
 
         const timezoneInputs = document.getElementById('timezone-inputs')!;
-        timezoneInputs.innerHTML = ''; // 清空之前的输入框
+        timezoneInputs.innerHTML = ''; // empty input
         for (let i = 0; i < clockCount; i++) {
             const input = document.createElement('input');
             input.type = 'number';
@@ -89,30 +89,30 @@ export class ClockManager {
             timezoneInputs.appendChild(input);
         }
 
-        console.log('Switching to step 2'); // 调试信息
+        console.log('Switching to step 2'); //  messages
         this.step1.style.display = 'none';
         this.step2.style.display = 'block';
 
     }
 
     handleDialogSubmit(): void {
-        this.isHandlingSubmit = true; // 设置标志变量
-        console.log('handleDialogSubmit called'); // 调试信息
+        // this.isHandlingSubmit = true; 
+        console.log('handleDialogSubmit called'); //  messages
         const timezoneInputs = document.getElementsByClassName('timezone-input') as HTMLCollectionOf<HTMLInputElement>;
         const timezones: number[] = [];
         for (let i = 0; i < timezoneInputs.length; i++) {
             const timezoneOffset = parseInt(timezoneInputs[i].value, 10);
             if (isNaN(timezoneOffset)) {
                 alert('Please enter a valid timezone offset.');
-                this.isHandlingSubmit = false;
+                // this.isHandlingSubmit = false;
                 return;
             }
             timezones.push(timezoneOffset);
         }
 
-        console.log('Adding clocks'); // 调试信息
+        console.log('Adding clocks'); //  messages
         this.addClocks(timezones.length, timezones);
-        this.isHandlingSubmit = false;
+        // this.isHandlingSubmit = false;
         this.hideDialog();
     }
 
@@ -122,20 +122,20 @@ export class ClockManager {
         }
     }
    addClock(timezoneOffset: number): void {
-    const uniqueId = `clock-${this.watches.length + 1}`; // 生成唯一ID，基于表盘数量
+    const uniqueId = `clock-${this.watches.length + 1}`; // id
     const existingElement = document.getElementById(uniqueId);
     if (existingElement) {
-        console.log(`Clock with ID: ${uniqueId} already exists!`); // 检查是否已存在
+        console.log(`Clock with ID: ${uniqueId} already exists!`); // check
         return;
     }
 
-    console.log(`Creating clock with ID: ${uniqueId}`); // 日志记录ID
-    const watch = new Watch(uniqueId, timezoneOffset); // 将唯一ID和时区偏移传递给Watch实例
+    console.log(`Creating clock with ID: ${uniqueId}`); //message
+    const watch = new Watch(uniqueId, timezoneOffset); 
     this.watches.push(watch);
 
     const clockElement = document.createElement('div');
     clockElement.className = 'clock';
-    clockElement.id = uniqueId; // 设置唯一ID
+    clockElement.id = uniqueId; // id
     clockElement.innerHTML = `
         <div class="timezone">GMT${timezoneOffset >= 0 ? '+' : ''}${timezoneOffset}</div>
         <div class="square">
@@ -153,7 +153,7 @@ export class ClockManager {
 
     this.container.appendChild(clockElement);
 
-    // 通过 data-id 属性绑定事件监听器
+    // Bind an event listener with the data-id 
     document.querySelector(`.mode-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
         watch.modeButton();
     });
@@ -184,12 +184,12 @@ export class ClockManager {
     }, 1000);
 }
 
-    // 停止所有动画
+    // stop
     stopAllAnimations(): void {
         this.animators.forEach(animator => animator.stopAnimation());
     }
 
-    // 启动所有动画
+    // start all
     startAllAnimations(): void {
         this.isAnimationEnabled = true;
     }
