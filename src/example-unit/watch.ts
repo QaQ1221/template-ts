@@ -2,8 +2,7 @@ import { Time } from './time';
 import { Light } from './light';
 
 export class Watch {
-    private currentTime: Time;
-    
+    private currentTime: Time;   
     private editMode: number;
     private light: Light;
     private uniqueId: string;
@@ -11,16 +10,10 @@ export class Watch {
 
     constructor(uniqueId: string, timezoneOffset: number) {
         this.currentTime = new Time(timezoneOffset);
-
         this.editMode = 0; // 0: 不可编辑，1: 编辑小时，2: 编辑分钟
         this.light = new Light(uniqueId); // 将唯一ID传递给Light实例
         this.uniqueId = uniqueId; // 接收唯一ID
         this.timezoneOffset = timezoneOffset; // 保存时区偏移量
-    }
-
-    displayTime(): void {
-        console.log(`Current Time: ${this.currentTime.getTime()}`);
-        this.updateDisplay(); 
     }
 
     modeButton(): void {
@@ -35,7 +28,7 @@ export class Watch {
         } else if (this.editMode === 2) {
             this.currentTime.increaseMinute(); 
         }
-        this.displayTime();
+        this.updateDisplay(); 
     }
 
     lightButton(): void {
@@ -44,16 +37,16 @@ export class Watch {
     
     toggleFormatButton(): void {
         this.currentTime.toggleFormat();
-        this.displayTime();
+         this.updateDisplay(); 
     }
     
     resetButton(): void {
         const now = new Date();
         this.currentTime.resetTime(now, this.timezoneOffset); // 使用当前时间和时区偏移重置时间
-        this.displayTime();
+        this.updateDisplay(); 
     }
 
-    private updateDisplay(): void {
+    updateDisplay(): void {
         const timeDisplayElement = document.querySelector(`#${this.uniqueId} h1`); // 使用唯一ID获取元素
         if (timeDisplayElement) {
             timeDisplayElement.textContent = `${this.currentTime.getTime()}`;

@@ -1,8 +1,9 @@
-import { Watch } from './watch';
 import { WatchAnimator } from './watchAnimator';
+import { Watch } from './watch';
 
 export class ClockManager {
     private watches: Watch[] = [];
+    private animators: WatchAnimator[] = []; // 保存所有的 WatchAnimator 实例
     private container: HTMLElement;
     private dialogContainer: HTMLElement;
     private step1: HTMLElement;
@@ -10,9 +11,11 @@ export class ClockManager {
     private nextButton: HTMLElement;
     private submitButton: HTMLElement;
     private cancelButton: HTMLElement;
+    private isAnimationEnabled: boolean = false; // 全局动画开关
     private addClockButton: HTMLElement;
-    private isHandlingNextStep: boolean;
-    private hasHandledNextStep: boolean;
+    private isHandlingNextStep: boolean = false;
+    private isHandlingSubmit: boolean = false;
+
     constructor(containerId: string) {
         const container = document.getElementById(containerId);
         const dialogContainer = document.getElementById('dialog-container');
@@ -20,8 +23,8 @@ export class ClockManager {
         const step2 = document.getElementById('step-2');
         const nextButton = document.getElementById('next-button');
         const submitButton = document.getElementById('submit-button');
-        const addClockButton = document.getElementById('add-clock-button');
         const cancelButton = document.getElementById('cancel-button');
+        const addClockButton = document.getElementById('add-clock-button');
         if (!container || !dialogContainer || !step1 || !step2 || !nextButton || !submitButton || !cancelButton|| !addClockButton) {
             throw new Error('Required element not found');
         }
@@ -33,20 +36,20 @@ export class ClockManager {
         this.submitButton = submitButton;
         this.cancelButton = cancelButton;
         this.addClockButton = addClockButton;
-        this.isHandlingNextStep = false;
-        this.hasHandledNextStep = false;
-
-        // 确保事件监听器只绑定一次
         this.addClockButton.addEventListener('click', () => {
             this.showDialog();
-            this.hasHandledNextStep = false; // 重置标志
+            this.isHandlingNextStep = false; // 重置标志
         });
-    
-        // 移除可能存在的重复绑定
-        this.nextButton.removeEventListener('click', this.handleNextStep.bind(this));
-        this.submitButton.removeEventListener('click', this.handleDialogSubmit.bind(this));
-        this.cancelButton.removeEventListener('click', this.hideDialog.bind(this));
-    
+
+
+        document.getElementById('start-animation-button')?.addEventListener('click', () => {
+            this.startAllAnimations();
+        });
+
+        document.getElementById('stop-animation-button')?.addEventListener('click', () => {
+            this.stopAllAnimations();
+        });
+
         // 绑定事件监听器
         this.nextButton.addEventListener('click', this.handleNextStep.bind(this));
         this.submitButton.addEventListener('click', this.handleDialogSubmit.bind(this));
@@ -64,19 +67,15 @@ export class ClockManager {
     }
 
     handleNextStep(): void {
-        if (this.hasHandledNextStep) {
-            console.log('handleNextStep called but ignored because it has already been called');
-            return;
-        }
-
+        if (this.isHandlingNextStep) return; // 如果已经在处理，则返回
+        this.isHandlingNextStep = true; //
         console.log('handleNextStep called'); // 调试信息
-        this.hasHandledNextStep = true;
-
+   
         const clockCount = parseInt((document.getElementById('clock-count') as HTMLInputElement).value, 10);
         console.log(`clockCount: ${clockCount}`); // 调试信息
         if (isNaN(clockCount) || clockCount <= 0) {
             alert('Please enter a valid number of clocks.');
-            this.hasHandledNextStep = false; // 重新启用处理
+            this.isHandlingNextStep = false; // 重置标志变量
             return;
         }
 
@@ -90,12 +89,14 @@ export class ClockManager {
             timezoneInputs.appendChild(input);
         }
 
-        console.log('Switching to step 2'); 
+        console.log('Switching to step 2'); // 调试信息
         this.step1.style.display = 'none';
         this.step2.style.display = 'block';
+
     }
 
     handleDialogSubmit(): void {
+        this.isHandlingSubmit = true; // 设置标志变量
         console.log('handleDialogSubmit called'); // 调试信息
         const timezoneInputs = document.getElementsByClassName('timezone-input') as HTMLCollectionOf<HTMLInputElement>;
         const timezones: number[] = [];
@@ -103,6 +104,7 @@ export class ClockManager {
             const timezoneOffset = parseInt(timezoneInputs[i].value, 10);
             if (isNaN(timezoneOffset)) {
                 alert('Please enter a valid timezone offset.');
+                this.isHandlingSubmit = false;
                 return;
             }
             timezones.push(timezoneOffset);
@@ -110,6 +112,7 @@ export class ClockManager {
 
         console.log('Adding clocks'); // 调试信息
         this.addClocks(timezones.length, timezones);
+        this.isHandlingSubmit = false;
         this.hideDialog();
     }
 
@@ -118,7 +121,6 @@ export class ClockManager {
             this.addClock(timezones[i]);
         }
     }
-
     addClock(timezoneOffset: number): void {
         const uniqueId = `time-display-${this.watches.length + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`; // 生成唯一ID
         const existingElement = document.getElementById(uniqueId);
@@ -173,13 +175,28 @@ export class ClockManager {
             watch.toggleFormatButton();
         });
 
-        const animator = new WatchAnimator(clockElement, this.container); // 为每个表盘创建一个动画实例
-
+        const animator = new WatchAnimator(clockElement, this.container,this); // 为每个表盘创建一个动画实例
+        this.animators.push(animator);
 
         setInterval(() => {
             const currentTime = watch.getCurrentTime();
             currentTime.increaseSecond();
-            watch.displayTime();
+            watch.updateDisplay();
         }, 1000);
+    }
+    
+    // 停止所有动画
+    stopAllAnimations(): void {
+        this.animators.forEach(animator => animator.stopAnimation());
+    }
+
+    // 启动所有动画
+    startAllAnimations(): void {
+        this.isAnimationEnabled = true;
+    }
+
+    // 检查动画是否启用
+    isAnimationActive(): boolean {
+        return this.isAnimationEnabled;
     }
 }
