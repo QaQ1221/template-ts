@@ -11,11 +11,10 @@ export class Watch {
 
     constructor(uniqueId: string, timezoneOffset: number) {
         this.currentTime = new Time(timezoneOffset);
-
-        this.editMode = 0; // 0: 不可编辑，1: 编辑小时，2: 编辑分钟
-        this.light = new Light(uniqueId); // 将唯一ID传递给Light实例
-        this.uniqueId = uniqueId; // 接收唯一ID
-        this.timezoneOffset = timezoneOffset; // 保存时区偏移量
+        this.editMode = 0; 
+        this.light = new Light(uniqueId); // send id
+        this.uniqueId = uniqueId; // 
+        this.timezoneOffset = timezoneOffset; //get timezone
     }
 
     displayTime(): void {
@@ -49,12 +48,12 @@ export class Watch {
     
     resetButton(): void {
         const now = new Date();
-        this.currentTime.resetTime(now, this.timezoneOffset); // 使用当前时间和时区偏移重置时间
+        this.currentTime.resetTime(now, this.timezoneOffset); 
         this.displayTime();
     }
 
     private updateDisplay(): void {
-        const timeDisplayElement = document.querySelector(`#${this.uniqueId} h1`); // 使用唯一ID获取元素
+        const timeDisplayElement = document.querySelector(`#${this.uniqueId} h1`); // getid 
         if (timeDisplayElement) {
             timeDisplayElement.textContent = `${this.currentTime.getTime()}`;
         }

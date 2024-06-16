@@ -10,8 +10,7 @@ export class ClockManager {
     private submitButton: HTMLElement;
     private cancelButton: HTMLElement;
     private addClockButton: HTMLElement;
-    private isHandlingNextStep: boolean;
-    private hasHandledNextStep: boolean;
+    // private hasHandledNextStep: boolean;
     constructor(containerId: string) {
         const container = document.getElementById(containerId);
         const dialogContainer = document.getElementById('dialog-container');
@@ -32,21 +31,19 @@ export class ClockManager {
         this.submitButton = submitButton;
         this.cancelButton = cancelButton;
         this.addClockButton = addClockButton;
-        this.isHandlingNextStep = false;
-        this.hasHandledNextStep = false;
+        // this.hasHandledNextStep = false;
 
-        // 确保事件监听器只绑定一次
+      
         this.addClockButton.addEventListener('click', () => {
             this.showDialog();
-            this.hasHandledNextStep = false; // 重置标志
+            // this.hasHandledNextStep = false; // reset
         });
     
-        // 移除可能存在的重复绑定
+        
         this.nextButton.removeEventListener('click', this.handleNextStep.bind(this));
         this.submitButton.removeEventListener('click', this.handleDialogSubmit.bind(this));
         this.cancelButton.removeEventListener('click', this.hideDialog.bind(this));
     
-        // 绑定事件监听器
         this.nextButton.addEventListener('click', this.handleNextStep.bind(this));
         this.submitButton.addEventListener('click', this.handleDialogSubmit.bind(this));
         this.cancelButton.addEventListener('click', this.hideDialog.bind(this));
@@ -63,24 +60,19 @@ export class ClockManager {
     }
 
     handleNextStep(): void {
-        if (this.hasHandledNextStep) {
-            console.log('handleNextStep called but ignored because it has already been called');
-            return;
-        }
 
-        console.log('handleNextStep called'); // 调试信息
-        this.hasHandledNextStep = true;
+        console.log('handleNextStep called'); //  
+        // this.hasHandledNextStep = true;
 
         const clockCount = parseInt((document.getElementById('clock-count') as HTMLInputElement).value, 10);
-        console.log(`clockCount: ${clockCount}`); // 调试信息
+        console.log(`clockCount: ${clockCount}`); //  
         if (isNaN(clockCount) || clockCount <= 0) {
             alert('Please enter a valid number of clocks.');
-            this.hasHandledNextStep = false; // 重新启用处理
             return;
         }
 
         const timezoneInputs = document.getElementById('timezone-inputs')!;
-        timezoneInputs.innerHTML = ''; // 清空之前的输入框
+        timezoneInputs.innerHTML = ''; // Clear the previous input box
         for (let i = 0; i < clockCount; i++) {
             const input = document.createElement('input');
             input.type = 'number';
@@ -89,13 +81,13 @@ export class ClockManager {
             timezoneInputs.appendChild(input);
         }
 
-        console.log('Switching to step 2'); // 调试信息
+        console.log('Switching to step 2'); //  
         this.step1.style.display = 'none';
         this.step2.style.display = 'block';
     }
 
     handleDialogSubmit(): void {
-        console.log('handleDialogSubmit called'); // 调试信息
+        console.log('handleDialogSubmit called'); 
         const timezoneInputs = document.getElementsByClassName('timezone-input') as HTMLCollectionOf<HTMLInputElement>;
         const timezones: number[] = [];
         for (let i = 0; i < timezoneInputs.length; i++) {
@@ -107,7 +99,7 @@ export class ClockManager {
             timezones.push(timezoneOffset);
         }
 
-        console.log('Adding clocks'); // 调试信息
+        console.log('Adding clocks'); 
         this.addClocks(timezones.length, timezones);
         this.hideDialog();
     }
@@ -119,20 +111,20 @@ export class ClockManager {
     }
 
     addClock(timezoneOffset: number): void {
-        const uniqueId = `clock-${this.watches.length + 1}`; // 生成唯一ID
+        const uniqueId = `clock-${this.watches.length + 1}`; // uniqueId
         const existingElement = document.getElementById(uniqueId);
         if (existingElement) {
-            console.log(`Clock with ID: ${uniqueId} already exists!`); // 检查是否已存在
+            console.log(`Clock with ID: ${uniqueId} already exists!`);  // Check if it already exists
             return;
         }
 
-        console.log(`Creating clock with ID: ${uniqueId}`); // 日志记录ID
-        const watch = new Watch(uniqueId, timezoneOffset); // 将唯一ID和时区偏移传递给Watch实例
+        console.log(`Creating clock with ID: ${uniqueId}`); 
+        const watch = new Watch(uniqueId, timezoneOffset); // Pass the unique ID and time zone offset to the Watch instance
         this.watches.push(watch);
 
         const clockElement = document.createElement('div');
         clockElement.className = 'clock';
-        clockElement.id = uniqueId; // 设置唯一ID
+        clockElement.id = uniqueId; // set id
         clockElement.innerHTML = `
             <div class="timezone">GMT${timezoneOffset >= 0 ? '+' : ''}${timezoneOffset}</div>
             <div class="square">
@@ -151,7 +143,7 @@ export class ClockManager {
 
         this.container.appendChild(clockElement);
 
-        // 通过 data-id 属性绑定事件监听器
+        // Bind an event listener with the data-id 
         document.querySelector(`.mode-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
             watch.modeButton();
         });
