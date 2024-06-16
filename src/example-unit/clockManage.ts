@@ -119,7 +119,7 @@ export class ClockManager {
     }
 
     addClock(timezoneOffset: number): void {
-        const uniqueId = `time-display-${this.watches.length + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`; // 生成唯一ID
+        const uniqueId = `clock-${this.watches.length + 1}`; // 生成唯一ID
         const existingElement = document.getElementById(uniqueId);
         if (existingElement) {
             console.log(`Clock with ID: ${uniqueId} already exists!`); // 检查是否已存在
