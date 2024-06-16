@@ -10,7 +10,6 @@ export class ClockManager {
     private submitButton: HTMLElement;
     private cancelButton: HTMLElement;
     private addClockButton: HTMLElement;
-    // private hasHandledNextStep: boolean;
     constructor(containerId: string) {
         const container = document.getElementById(containerId);
         const dialogContainer = document.getElementById('dialog-container');
@@ -31,12 +30,11 @@ export class ClockManager {
         this.submitButton = submitButton;
         this.cancelButton = cancelButton;
         this.addClockButton = addClockButton;
-        // this.hasHandledNextStep = false;
+   
 
       
         this.addClockButton.addEventListener('click', () => {
             this.showDialog();
-            // this.hasHandledNextStep = false; // reset
         });
     
         
@@ -62,8 +60,7 @@ export class ClockManager {
     handleNextStep(): void {
 
         console.log('handleNextStep called'); //  
-        // this.hasHandledNextStep = true;
-
+   
         const clockCount = parseInt((document.getElementById('clock-count') as HTMLInputElement).value, 10);
         console.log(`clockCount: ${clockCount}`); //  
         if (isNaN(clockCount) || clockCount <= 0) {
