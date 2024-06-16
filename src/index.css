@@ -7,7 +7,7 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
     position: relative;
-    overflow: visible;   /* 确保父容器允许子元素溢出 */
+    overflow: visible; /* 确保父容器允许子元素溢出 */
 }
 
 .container {
@@ -17,9 +17,8 @@ body {
     align-items: flex-start;
     max-width: 100%;
     overflow: hidden;
-    overflow: visible;   /* 确保父容器允许子元素溢出 */
+    overflow: visible; /* 确保父容器允许子元素溢出 */
 }
-
 
 .clock {
     display: flex;
@@ -62,18 +61,6 @@ h1 {
     display: flex;
     gap: 10px;
     flex-direction: column;
-}
-
-.left-buttons {
-    position: absolute;
-    left: 0;
-    top: 50%;
-}
-
-.right-buttons {
-    position: absolute;
-    right: 0;
-    top: 50%;
 }
 
 button {
@@ -183,32 +170,36 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: translateX(30px);
 }
 
 .mode-button, .increase-button, .light-button, .reset-button, .toggle-format-button {
     position: absolute;
-    transform: translate(-50%, -50%);
+    width: 70px; /* 设置按钮大小一致 */
+    height: 30px; /* 设置按钮大小一致 */
+    transform: translate(-50%, -50%) ; /* 右偏移 10px */
 }
 
 .mode-button {
-    transform: translate(-50%, -50%) rotate(0deg) translate(140px) rotate(0deg);
+    transform: translate(-50%, -50%)rotate(0deg) translate(120px) rotate(0deg);
 }
 
 .increase-button {
-    transform: translate(-50%, -50%) rotate(72deg) translate(140px) rotate(-72deg);
+    transform: translate(-50%, -50%)rotate(72deg) translate(120px) rotate(-72deg) translateY(20px);
 }
 
 .light-button {
-    transform: translate(-50%, -50%) rotate(144deg) translate(140px) rotate(-144deg);
+    transform: translate(-50%, -50%) rotate(144deg) translate(120px) rotate(-144deg);
 }
 
 .reset-button {
-    transform: translate(-50%, -50%) rotate(216deg) translate(140px) rotate(-216deg);
+    transform: translate(-50%, -50%) rotate(216deg) translate(120px) rotate(-216deg);
 }
 
 .toggle-format-button {
-    transform: translate(-50%, -50%) rotate(288deg) translate(140px) rotate(-288deg);
+    transform: translate(-50%, -50%)  rotate(288deg) translate(120px) rotate(-288deg);
 }
+
 .controls {
     position: fixed;
     top: 10px;

@@ -51,7 +51,7 @@ export class ClockManager {
         });
 
         // 绑定事件监听器
-        this.nextButton.addEventListener('click', this.handleNextStep.bind(this));
+        this.nextButton.addEventListener('click', this. handleNextStep.bind(this));
         this.submitButton.addEventListener('click', this.handleDialogSubmit.bind(this));
         this.cancelButton.addEventListener('click', this.hideDialog.bind(this));
     }
@@ -65,7 +65,7 @@ export class ClockManager {
     hideDialog(): void {
         this.dialogContainer.style.display = 'none';
     }
-
+  
     handleNextStep(): void {
         if (this.isHandlingNextStep) return; // 如果已经在处理，则返回
         this.isHandlingNextStep = true; //
@@ -121,70 +121,69 @@ export class ClockManager {
             this.addClock(timezones[i]);
         }
     }
-    addClock(timezoneOffset: number): void {
-        const uniqueId = `time-display-${this.watches.length + 1}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`; // 生成唯一ID
-        const existingElement = document.getElementById(uniqueId);
-        if (existingElement) {
-            console.log(`Clock with ID: ${uniqueId} already exists!`); // 检查是否已存在
-            return;
-        }
-
-        console.log(`Creating clock with ID: ${uniqueId}`); // 日志记录ID
-        const watch = new Watch(uniqueId, timezoneOffset); // 将唯一ID和时区偏移传递给Watch实例
-        this.watches.push(watch);
-
-        const clockElement = document.createElement('div');
-        clockElement.className = 'clock';
-        clockElement.id = uniqueId; // 设置唯一ID
-        clockElement.innerHTML = `
-            <div class="timezone">GMT${timezoneOffset >= 0 ? '+' : ''}${timezoneOffset}</div>
-            <div class="square">
-          <h1 id="${uniqueId}">Loading...</h1>
-          <div class="button-container">
-           <button class="mode-button" data-id="${uniqueId}">Mode</button>
-           <button class="increase-button" data-id="${uniqueId}">Increase</button>
-           <button class="light-button" data-id="${uniqueId}">Light</button>
-           <button class="reset-button" data-id="${uniqueId}">Reset</button>
-           <button class="toggle-format-button" data-id="${uniqueId}">Format</button>
-          </div>
-          </div>
-
-            `;
-
-
-        this.container.appendChild(clockElement);
-
-        // 通过 data-id 属性绑定事件监听器
-        document.querySelector(`.mode-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
-            watch.modeButton();
-        });
-
-        document.querySelector(`.increase-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
-            watch.increaseButton();
-        });
-
-        document.querySelector(`.light-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
-            watch.lightButton();
-        });
-
-        document.querySelector(`.reset-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
-            watch.resetButton();
-        });
-
-        document.querySelector(`.toggle-format-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
-            watch.toggleFormatButton();
-        });
-
-        const animator = new WatchAnimator(clockElement, this.container,this); // 为每个表盘创建一个动画实例
-        this.animators.push(animator);
-
-        setInterval(() => {
-            const currentTime = watch.getCurrentTime();
-            currentTime.increaseSecond();
-            watch.updateDisplay();
-        }, 1000);
+   addClock(timezoneOffset: number): void {
+    const uniqueId = `clock-${this.watches.length + 1}`; // 生成唯一ID，基于表盘数量
+    const existingElement = document.getElementById(uniqueId);
+    if (existingElement) {
+        console.log(`Clock with ID: ${uniqueId} already exists!`); // 检查是否已存在
+        return;
     }
-    
+
+    console.log(`Creating clock with ID: ${uniqueId}`); // 日志记录ID
+    const watch = new Watch(uniqueId, timezoneOffset); // 将唯一ID和时区偏移传递给Watch实例
+    this.watches.push(watch);
+
+    const clockElement = document.createElement('div');
+    clockElement.className = 'clock';
+    clockElement.id = uniqueId; // 设置唯一ID
+    clockElement.innerHTML = `
+        <div class="timezone">GMT${timezoneOffset >= 0 ? '+' : ''}${timezoneOffset}</div>
+        <div class="square">
+            <h1 id="${uniqueId}">Loading...</h1>
+            <div class="button-container">
+                <button class="mode-button" data-id="${uniqueId}">Mode</button>
+                <button class="increase-button" data-id="${uniqueId}">Increase</button>
+                <button class="light-button" data-id="${uniqueId}">Light</button>
+                <button class="reset-button" data-id="${uniqueId}">Reset</button>
+                <button class="toggle-format-button" data-id="${uniqueId}">Format</button>
+            </div>
+        </div>
+        <div class="clock-id">ID: ${uniqueId}</div>
+    `;
+
+    this.container.appendChild(clockElement);
+
+    // 通过 data-id 属性绑定事件监听器
+    document.querySelector(`.mode-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
+        watch.modeButton();
+    });
+
+    document.querySelector(`.increase-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
+        watch.increaseButton();
+    });
+
+    document.querySelector(`.light-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
+        watch.lightButton();
+    });
+
+    document.querySelector(`.reset-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
+        watch.resetButton();
+    });
+
+    document.querySelector(`.toggle-format-button[data-id="${uniqueId}"]`)?.addEventListener('click', () => {
+        watch.toggleFormatButton();
+    });
+
+    const animator = new WatchAnimator(clockElement, this.container, this);
+    this.animators.push(animator);
+
+    setInterval(() => {
+        const currentTime = watch.getCurrentTime();
+        currentTime.increaseSecond();
+        watch.updateDisplay();
+    }, 1000);
+}
+
     // 停止所有动画
     stopAllAnimations(): void {
         this.animators.forEach(animator => animator.stopAnimation());

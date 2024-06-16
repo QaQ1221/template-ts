@@ -10,4 +10,4 @@ document.getElementById('clock-container')!.innerHTML = '';
 
 // Add clock
 clockManager.addClock(1);
-clockManager.addClock(2);
+// clockManager.addClock(2);
