@@ -16,13 +16,13 @@ export class Vector2 {
 }
 
 export class Matrix3x3 {
-    constructor(public m: number[][]) {}
+    constructor(public m:[[number, number, number], [number, number, number], [number, number, number]] ) {}
 
     static identity(): Matrix3x3 {
         return new Matrix3x3([
             [1, 0, 0],
             [0, 1, 0],
-            [0, 0, 1]
+            [0, 0, 1],
         ]);
     }
 

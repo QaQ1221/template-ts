@@ -50,7 +50,7 @@ export class ClockManager {
             this.stopAllAnimations();
         });
 
-        // 绑定事件监听器
+        //buttons
         this.nextButton.addEventListener('click', this. handleNextStep.bind(this));
         this.submitButton.addEventListener('click', this.handleDialogSubmit.bind(this));
         this.cancelButton.addEventListener('click', this.hideDialog.bind(this));
@@ -122,7 +122,7 @@ export class ClockManager {
         }
     }
    addClock(timezoneOffset: number): void {
-    const uniqueId = `clock-${this.watches.length + 1}`; // id
+    const uniqueId = `clock-${this.watches.length + 1}`; // id don't change
     const existingElement = document.getElementById(uniqueId);
     if (existingElement) {
         console.log(`Clock with ID: ${uniqueId} already exists!`); // check
@@ -194,7 +194,7 @@ export class ClockManager {
         this.isAnimationEnabled = true;
     }
 
-    // 检查动画是否启用
+    // isanimation?
     isAnimationActive(): boolean {
         return this.isAnimationEnabled;
     }

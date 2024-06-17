@@ -13,7 +13,7 @@ export class Watch {
         this.editMode = 0; // 0: not editable, 1: edit hours, 2: edit minutes
         this.light = new Light(uniqueId); // send id 
         this.uniqueId = uniqueId; 
-        this.timezoneOffset = timezoneOffset; // 保存时区偏移量
+        this.timezoneOffset = timezoneOffset; 
     }
 
     modeButton(): void {
